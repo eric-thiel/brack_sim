@@ -46,6 +46,7 @@ sim_round <- function(bracket) {
 seed_list <- read_csv("~/Downloads/bracketmaniav2 - seed_list.csv")
 
 power_rankings <- read_csv("~/Downloads/bracketmaniav2 - KP.csv")
+perc_chosen <- read_csv("~/Downloads/bracketmaniav2 - pick_perc_std.csv")
 
 # power_rankings <- read_csv("~/Downloads/power_rankings.csv")
 power_rankings = power_rankings %>% rename("team" = "TeamName")
@@ -53,22 +54,82 @@ power_rankings = power_rankings %>% rename("team" = "TeamName")
 
 seed_list <- 
   seed_list %>% 
-  inner_join(select(power_rankings, team, 'rating' = AdjEM), by = 'team')
+  inner_join(select(perc_chosen, team, r1 = prob_r1, r2 = prob_r2, r3 = prob_r3, r4 = prob_r4, r5 = prob_r5, r6 = prob_r6), by = 'team')
 
 
 ### Compute a win-probability matrix for each possible combination of teams
 wp_matrix <- 
   crossing('team' = seed_list$team, 
            'opponent' = seed_list$team) %>% 
-  inner_join(select(seed_list, team, rating), 
+  inner_join(select(seed_list, team, r1, r2, r3, r4, r5, r6), 
              by = 'team') %>% 
-  inner_join(select(seed_list, team, rating), 
+  inner_join(select(seed_list, team, r1, r2, r3, r4, r5, r6), 
              by = c('opponent' = 'team'), 
-             suffix = c('_team', '_opponent')) %>% 
+             suffix = c('_team', '_opponent')) %>%
+  inner_join(select(seed_list, region, seed, team),
+             by = 'team') %>%
+  inner_join(select(seed_list, region, seed, team),
+             by = c('opponent'='team'),
+             suffix = c('_team', '_opponent'))%>%
+  mutate(when_can_play = case_when(
+    region_team == "East" & region_opponent == "West" ~ "r5",
+    region_team == "West" & region_opponent == "East" ~ "r5",
+    region_team == "South" & region_opponent == "Midwest" ~ "r5",
+    region_team == "Midwest" & region_opponent == "South" ~ "r5",
+    (region_team == "East" | region_team == "West" )& (region_opponent == "South" | region_opponent == "Midwest") ~ "r6",
+    (region_team == "South" | region_team == "Midwest") & (region_opponent == "East" | region_opponent == "West") ~ "r6",
+    
+    (region_team == region_opponent) & (seed_team == 1 & seed_opponent == 16) ~ "r1",
+    (region_team == region_opponent) & (seed_team == 2 & seed_opponent == 15) ~ "r1",
+    (region_team == region_opponent) & (seed_team == 3 & seed_opponent == 14) ~ "r1",
+    (region_team == region_opponent) & (seed_team == 4 & seed_opponent == 13) ~ "r1",
+    (region_team == region_opponent) & (seed_team == 5 & seed_opponent == 12) ~ "r1",
+    (region_team == region_opponent) & (seed_team == 6 & seed_opponent == 11) ~ "r1",
+    (region_team == region_opponent) & (seed_team == 7 & seed_opponent == 10) ~ "r1",
+    (region_team == region_opponent) & (seed_team == 8 & seed_opponent == 9) ~ "r1",
+    
+    (region_team == region_opponent) & (seed_opponent == 1 & seed_team == 16) ~ "r1",
+    (region_team == region_opponent) & (seed_opponent == 2 & seed_team == 15) ~ "r1",
+    (region_team == region_opponent) & (seed_opponent == 3 & seed_team == 14) ~ "r1",
+    (region_team == region_opponent) & (seed_opponent == 4 & seed_team == 13) ~ "r1",
+    (region_team == region_opponent) & (seed_opponent == 5 & seed_team == 12) ~ "r1",
+    (region_team == region_opponent) & (seed_opponent == 6 & seed_team == 11) ~ "r1",
+    (region_team == region_opponent) & (seed_opponent == 7 & seed_team == 10) ~ "r1",
+    (region_team == region_opponent) & (seed_opponent == 8 & seed_team == 9) ~ "r1",
+    
+    
+    (region_team == region_opponent) & ((seed_team == 1 | seed_team == 16) & (seed_opponent == 9 | seed_opponent == 8)) ~ "r2",
+    (region_team == region_opponent) & ((seed_team == 5 | seed_team == 12) & (seed_opponent == 4 | seed_opponent == 13)) ~ "r2",
+    (region_team == region_opponent) & ((seed_team == 6 | seed_team == 11) & (seed_opponent == 3 | seed_opponent == 14)) ~ "r2",
+    (region_team == region_opponent) & ((seed_team == 7 | seed_team == 10) & (seed_opponent == 2 | seed_opponent == 15)) ~ "r2",
+    
+    (region_team == region_opponent) & ((seed_opponent == 1 | seed_opponent == 16) & (seed_team == 9 | seed_team == 8)) ~ "r2",
+    (region_team == region_opponent) & ((seed_opponent == 5 | seed_opponent == 12) & (seed_team == 4 | seed_team == 13)) ~ "r2",
+    (region_team == region_opponent) & ((seed_opponent == 6 | seed_opponent == 11) & (seed_team == 3 | seed_team == 14)) ~ "r2",
+    (region_team == region_opponent) & ((seed_opponent == 7 | seed_opponent == 10) & (seed_team == 2 | seed_team == 15)) ~ "r2",
+    
+    
+    (region_team == region_opponent) & ((seed_team == 1 | seed_team == 16 | seed_team == 8 | seed_team == 9) & (seed_opponent == 5 | seed_opponent == 12 | seed_opponent == 4 | seed_opponent == 13)) ~"r3",
+    (region_team == region_opponent) & ((seed_team == 6 | seed_team == 11 | seed_team == 3 | seed_team == 14) & (seed_opponent == 7 | seed_opponent == 10 | seed_opponent == 2 | seed_opponent == 15)) ~"r3",
+   
+    (region_team == region_opponent) & ((seed_opponent == 1 | seed_opponent == 16 | seed_opponent == 8 | seed_opponent == 9) & (seed_team == 5 | seed_team == 12 | seed_team == 4 | seed_team == 13)) ~"r3",
+    (region_team == region_opponent) & ((seed_opponent == 6 | seed_opponent == 11 | seed_opponent == 3 | seed_opponent == 14) & (seed_team == 7 | seed_team == 10 | seed_team == 2 | seed_team == 15)) ~"r3",
+    
+    
+    (region_team == region_opponent) & ((seed_team == 1 | seed_team == 16 | seed_team == 8 | seed_team == 9 | seed_team == 5 | seed_team == 12 | seed_team == 4 | seed_team ==13) & (seed_opponent == 6 | seed_opponent == 11 | seed_opponent == 3 | seed_opponent == 14 | seed_opponent == 7 | seed_opponent == 10 | seed_opponent == 2 | seed_opponent == 15)) ~"r4",
+    
+    (region_team == region_opponent) & ((seed_opponent == 1 | seed_opponent == 16 | seed_opponent == 8 | seed_opponent == 9 | seed_opponent == 5 | seed_opponent == 12 | seed_opponent == 4 | seed_opponent ==13) & (seed_team == 6 | seed_team == 11 | seed_team == 3 | seed_team == 14 | seed_team == 7 | seed_team == 10 | seed_team == 2 | seed_team == 15)) ~"r4"
+     ))
+
+##   mutate(when_can_play = ifelse(region_team == "East" & region_opponent == "West", "r5",
+##ifelse(region_team == "East" & region_opponent == "Midwest" | region_opponent == "South", "r6",
+## )))
+
+
   ### Score Diff of Game
-  mutate('pred_score_diff' = rating_team - rating_opponent)%>%  
+  #mutate('pred_score_diff' = rating_team - rating_opponent)%>%  
   ### Win Prob for Team over Opponent
-  mutate('win_prob' = round(pnorm(pred_score_diff, 0,11),5))
+  #mutate('win_prob' = round(pnorm(pred_score_diff, 0,11),5))
 
 
 ### First Four
