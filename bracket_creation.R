@@ -14,7 +14,7 @@ library(furrr)
 options(future.fork.enable = T)
 
 ### Number of sims to run
-n_sims <- 1
+n_sims <- 5000
 # set.seed(13579)
 
 ### Function to sim games 
@@ -119,13 +119,29 @@ wp_matrix <-
     (region_team == region_opponent) & ((seed_team == 1 | seed_team == 16 | seed_team == 8 | seed_team == 9 | seed_team == 5 | seed_team == 12 | seed_team == 4 | seed_team ==13) & (seed_opponent == 6 | seed_opponent == 11 | seed_opponent == 3 | seed_opponent == 14 | seed_opponent == 7 | seed_opponent == 10 | seed_opponent == 2 | seed_opponent == 15)) ~"r4",
     
     (region_team == region_opponent) & ((seed_opponent == 1 | seed_opponent == 16 | seed_opponent == 8 | seed_opponent == 9 | seed_opponent == 5 | seed_opponent == 12 | seed_opponent == 4 | seed_opponent ==13) & (seed_team == 6 | seed_team == 11 | seed_team == 3 | seed_team == 14 | seed_team == 7 | seed_team == 10 | seed_team == 2 | seed_team == 15)) ~"r4"
-     ))
+     ),   win_prob = ifelse(when_can_play == "r1",  r1_team, 
+                            ifelse(when_can_play == "r2",(1-(r2_team + r2_opponent))/2+r2_team,
+                                   ifelse(when_can_play == "r3",(1-(r3_team + r3_opponent))/2+r3_team,
+                                          ifelse(when_can_play == "r4",(1-(r4_team + r4_opponent))/2+r4_team,
+                                                 ifelse(when_can_play=="r5",(1-(r5_team + r5_opponent))/2+r5_team,
+                                                        ifelse(when_can_play == "r6", (1-(r6_team + r6_opponent))/2+r6_team,0.5))))))) %>% select(team, opponent, win_prob)
 
-##   mutate(when_can_play = ifelse(region_team == "East" & region_opponent == "West", "r5",
-##ifelse(region_team == "East" & region_opponent == "Midwest" | region_opponent == "South", "r6",
-## )))
+  wp_matrix$win_prob = ifelse(is.na(wp_matrix$win_prob), 0.5, wp_matrix$win_prob)
+ # win_prob = ifelse(when_can_play == "r1",  r1_team, 
+ #                   ifelse(when_can_play == "r2",(1-(r2_team + r2_opponent))/2+r2_team,
+ #                          ifelse(when_can_play == "r3",(1-(r3_team + r3_opponent))/2+r3_team,
+ #                                 ifelse(when_can_play == "r4",(1-(r4_team + r4_opponent))/2+r4_team,
+ #                                        ifelse(when_can_play=="r5",(1-(r5_team + r5_opponent))/2+r5_team,
+ #                                               ifelse(when_can_play == "r6", (1-(r6_team + r6_opponent))/2+r6_team,0.5))))))) %>% select(team, opponent, win_prob)
 
-
+# win_prob = ifelse(when_can_play == "r1",  r1_team, 
+#                   ifelse(when_can_play == "r2",r2_team / (r2_team + r2_opponent),
+#                          ifelse(when_can_play == "r3",r3_team / (r3_team + r3_opponent),
+#                                 ifelse(when_can_play == "r4",r4_team / (r4_team + r4_opponent),
+#                                        ifelse(when_can_play=="r5",r5_team / (r5_team + r5_opponent),
+#                                               ifelse(when_can_play == "r6", r6_team / (r6_team + r6_opponent),0.5))))))) %>% select(team, opponent, win_prob)
+#
+  
   ### Score Diff of Game
   #mutate('pred_score_diff' = rating_team - rating_opponent)%>%  
   ### Win Prob for Team over Opponent

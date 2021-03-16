@@ -9,7 +9,6 @@ round_2_score = (length(which(round_2_score)))*2
 round_3_score <- bracket_created[[3]] == round_winners[[3]]
 round_3_score = (length(which(round_3_score)))*4
 
-
 round_4_score <- bracket_created[[4]] == round_winners[[4]]
 round_4_score = (length(which(round_4_score)))*8
 
