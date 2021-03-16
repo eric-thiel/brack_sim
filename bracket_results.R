@@ -14,7 +14,7 @@ library(furrr)
 options(future.fork.enable = T)
 
 ### Number of sims to run
-n_sims <- 1
+n_sims <- 2
 # set.seed(13579)
 
 ### Function to sim games 
@@ -57,7 +57,7 @@ seed_list <-
 
 
 ### Compute a win-probability matrix for each possible combination of teams
-wp_matrix <- 
+wp_matrix_test <- 
   crossing('team' = seed_list$team, 
            'opponent' = seed_list$team) %>% 
   inner_join(select(seed_list, team, rating), 
