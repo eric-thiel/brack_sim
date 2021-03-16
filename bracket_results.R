@@ -14,7 +14,7 @@ library(furrr)
 options(future.fork.enable = T)
 
 ### Number of sims to run
-n_sims <- 2
+n_result_sims <- 5000
 # set.seed(13579)
 
 ### Function to sim games 
@@ -76,7 +76,7 @@ first_four <-
   seed_list %>% 
   filter(first_four) %>% 
   build_bracket()
-first_four <- map(1:n_sims, ~{first_four})
+first_four <- map(1:n_result_sims, ~{first_four})
 
 first_four_winners <- future_map(first_four, sim_round)
 
@@ -104,13 +104,13 @@ sim_results <-
   seed_list %>% 
   select(-elim_round) %>% 
   group_by(team) %>% 
-  mutate('first_round' = ifelse(!first_four, 1, sum(team == unlist(first_four_winners))/n_sims),
-         'second_round' = sum(team == round_winners[[1]])/n_sims,
-         'sweet_sixteen' = sum(team == round_winners[[2]])/n_sims,
-         'elite_eight' = sum(team == round_winners[[3]])/n_sims,
-         'final_four' = sum(team == round_winners[[4]])/n_sims,
-         'championship_game' = sum(team == round_winners[[5]])/n_sims,
-         'champ' = sum(team == round_winners[[6]])/n_sims) %>% 
+  mutate('first_round' = ifelse(!first_four, 1, sum(team == unlist(first_four_winners))/n_result_sims),
+         'second_round' = sum(team == round_winners[[1]])/n_result_sims,
+         'sweet_sixteen' = sum(team == round_winners[[2]])/n_result_sims,
+         'elite_eight' = sum(team == round_winners[[3]])/n_result_sims,
+         'final_four' = sum(team == round_winners[[4]])/n_result_sims,
+         'championship_game' = sum(team == round_winners[[5]])/n_result_sims,
+         'champ' = sum(team == round_winners[[6]])/n_result_sims) %>% 
   ungroup() %>% 
   select(-first_four) 
 

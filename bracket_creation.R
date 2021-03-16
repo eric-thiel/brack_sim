@@ -14,7 +14,7 @@ library(furrr)
 options(future.fork.enable = T)
 
 ### Number of sims to run
-n_sims <- 5000
+n_creation_sims <- 5000
 # set.seed(13579)
 
 ### Function to sim games 
@@ -153,7 +153,7 @@ first_four <-
   seed_list %>% 
   filter(first_four) %>% 
   build_bracket()
-first_four <- map(1:n_sims, ~{first_four})
+first_four <- map(1:n_creation_sims, ~{first_four})
 
 first_four_winners <- future_map(first_four, sim_round)
 
@@ -171,9 +171,9 @@ for(i in 1:6) {
   cat('Simulating Round', i, 'of', 6, '\n')
   ### in bracket Form
   brackets <- future_map(ncaa_brackets, build_bracket)
-  winners <- future_map(brackets, sim_round)
-  bracket_created[[i]] <- unlist(winners)
-  ncaa_brackets <- map2(ncaa_brackets, winners, ~{filter(.x, team %in% .y)})
+  winners_creation <- future_map(brackets, sim_round)
+  bracket_created[[i]] <- unlist(winners_creation)
+  ncaa_brackets <- map2(ncaa_brackets, winners_creation, ~{filter(.x, team %in% .y)})
 }
 
 ### Aggregate Results
@@ -181,13 +181,13 @@ sim_results <-
   seed_list %>% 
   select(-elim_round) %>% 
   group_by(team) %>% 
-  mutate('first_round' = ifelse(!first_four, 1, sum(team == unlist(first_four_winners))/n_sims),
-         'second_round' = sum(team == bracket_created[[1]])/n_sims,
-         'sweet_sixteen' = sum(team == bracket_created[[2]])/n_sims,
-         'elite_eight' = sum(team == bracket_created[[3]])/n_sims,
-         'final_four' = sum(team == bracket_created[[4]])/n_sims,
-         'championship_game' = sum(team == bracket_created[[5]])/n_sims,
-         'champ' = sum(team == bracket_created[[6]])/n_sims) %>% 
+  mutate('first_round' = ifelse(!first_four, 1, sum(team == unlist(first_four_winners))/n_creation_sims),
+         'second_round' = sum(team == bracket_created[[1]])/n_creation_sims,
+         'sweet_sixteen' = sum(team == bracket_created[[2]])/n_creation_sims,
+         'elite_eight' = sum(team == bracket_created[[3]])/n_creation_sims,
+         'final_four' = sum(team == bracket_created[[4]])/n_creation_sims,
+         'championship_game' = sum(team == bracket_created[[5]])/n_creation_sims,
+         'champ' = sum(team == bracket_created[[6]])/n_creation_sims) %>% 
   ungroup() %>% 
   select(-first_four) 
 
