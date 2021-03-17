@@ -194,17 +194,17 @@ results = data.frame(scores, bracket_num, sim_num)
 # holding_money = holding_money %>% arrange(-cumulative_money_won)
 
 
-fix_mem_issues = function(results){
+#fix_mem_issues = function(results){
 max_pts = results %>% group_by(sim_num)%>%
   mutate(avg = mean(scores), score_above_avg = scores - avg)%>%
   group_by(bracket_num)%>%
-  summarise(mean_score_over_avg = mean(score_above_avg))%>%arrange(-mean_score_over_avg)
-return(max_pts)
-}
+  summarise(mean_score_over_avg = mean(score_above_avg), mean_score = mean(scores))%>%arrange(-mean_score_over_avg)
+#return(max_pts)
+#}
 
-max_pts = fix_mem_issues(results)
+# max_pts = fix_mem_issues(results)
 
-winner_bracket = max_pts[1,] ## 2nd best
+winner_bracket = max_pts[3,] ## 2nd best
 winner_bracket = winner_bracket$bracket_num
 
 winn = get_best_bracket(bracket_created, winner_bracket)
