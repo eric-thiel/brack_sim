@@ -111,30 +111,30 @@ sim_num = g[[3]]
 
 results = data.frame(scores, bracket_num, sim_num)
 
-pool_size = 200
-pool_sims = 1000
-options(dplyr.summarise.inform = FALSE)
-
-holding_money = c(1:n_creation_sims)
-holding_money = as.data.frame(holding_money)
-holding_money = holding_money %>% rename("bracket_number"="holding_money")%>%
-  mutate(cumulative_money_won = 0)
-s = rep(1:(len/100),times = 100)
-jumper = rep(1:(len/100))
-s =  sort(s)
-
-results_mirror = data.table(results)
-results_test = results
-
-test = g
-
-scores_test = scores
-bracket_num_test = bracket_num
-sim_num_test = sim_num
-
-preallo = rep(NA, len/pool_size*pool_sims)
-x = 0
-
+# pool_size = 200
+# pool_sims = 1000
+# options(dplyr.summarise.inform = FALSE)
+# 
+# holding_money = c(1:n_creation_sims)
+# holding_money = as.data.frame(holding_money)
+# holding_money = holding_money %>% rename("bracket_number"="holding_money")%>%
+#   mutate(cumulative_money_won = 0)
+# s = rep(1:(len/100),times = 100)
+# jumper = rep(1:(len/100))
+# s =  sort(s)
+# 
+# results_mirror = data.table(results)
+# results_test = results
+# 
+# test = g
+# 
+# scores_test = scores
+# bracket_num_test = bracket_num
+# sim_num_test = sim_num
+# 
+# preallo = rep(NA, len/pool_size*pool_sims)
+# x = 0
+# 
 # library(rlist)
 # sim_pools = function(results_mirror){
 # for (i in 1:pool_sims) {
@@ -193,11 +193,18 @@ x = 0
 
 # holding_money = holding_money %>% arrange(-cumulative_money_won)
 
+
+fix_mem_issues = function(results){
 max_pts = results %>% group_by(sim_num)%>%
   mutate(avg = mean(scores), score_above_avg = scores - avg)%>%
   group_by(bracket_num)%>%
   summarise(mean_score_over_avg = mean(score_above_avg))%>%arrange(-mean_score_over_avg)
+return(max_pts)
+}
 
-winner_bracket = head(max_pts$bracket_num,1)
+max_pts = fix_mem_issues(results)
+
+winner_bracket = max_pts[1,] ## 2nd best
+winner_bracket = winner_bracket$bracket_num
 
 winn = get_best_bracket(bracket_created, winner_bracket)

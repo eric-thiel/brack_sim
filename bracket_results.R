@@ -14,7 +14,7 @@ library(furrr)
 options(future.fork.enable = T)
 
 ### Number of sims to run
-n_result_sims <- 3000
+n_result_sims <- 30000
 # set.seed(13579)
 
 ### Function to sim games 
@@ -49,6 +49,7 @@ power_rankings <- read_csv("~/Downloads/bracketmaniav2 - KP.csv")
 
 # power_rankings <- read_csv("~/Downloads/power_rankings.csv")
 power_rankings = power_rankings %>% rename("team" = "TeamName")
+vegas <- read_csv("~/Downloads/bracketmaniav2 - vegas_so_far.csv")
 
 
 seed_list <- 
@@ -69,6 +70,10 @@ wp_matrix_test <-
   mutate('pred_score_diff' = rating_team - rating_opponent)%>%  
   ### Win Prob for Team over Opponent
   mutate('win_prob' = round(pnorm(pred_score_diff, 0,11),5))
+
+wp_matrix_test = left_join(wp_matrix_test, vegas[c("pwin","team","opponent")], by = c("team"="team","opponent"="opponent"))
+wp_matrix_test$win_prob = ifelse(!is.na(wp_matrix_test$pwin), wp_matrix_test$pwin, wp_matrix_test$win_prob)
+wp_matrix_test$pwin = NULL
 
 
 ### First Four
