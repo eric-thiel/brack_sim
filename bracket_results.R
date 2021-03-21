@@ -14,7 +14,7 @@ library(furrr)
 options(future.fork.enable = T)
 
 ### Number of sims to run
-n_result_sims <- 1000
+n_result_sims <- 30000
 # set.seed(13579)
 
 ### Function to sim games 
