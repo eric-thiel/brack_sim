@@ -14,7 +14,7 @@ library(furrr)
 options(future.fork.enable = T)
 
 ### Number of sims to run
-n_result_sims <- 30000
+n_result_sims <- 1000
 # set.seed(13579)
 
 ### Function to sim games 
@@ -28,7 +28,7 @@ build_bracket <- function(seed_list) {
   ix <- seq(1, n, 2)
   tibble('team' = seed_list$team[ix],
          'opponent' = seed_list$team[-ix]) %>% 
-    inner_join(wp_matrix, by = c('team', 'opponent'))
+    inner_join(wp_matrix_test, by = c('team', 'opponent'))
   
 }
 
