@@ -31,4 +31,6 @@ Post-tournament workflow -
 
 
 
+Takes a fairly long time but honestly is as optimized as I think ill get it. 
+
 
