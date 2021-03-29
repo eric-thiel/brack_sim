@@ -14,7 +14,9 @@ library(furrr)
 options(future.fork.enable = T)
 
 ### Number of sims to run
-n_creation_sims <- 1
+n_creation_sims <- 30000 ## amount of brackets to be created from pick percentages
+n_result_sims <- 25000 ## amount of brackets to be created from vegas (for first round) and KP the rest of the way
+
 # set.seed(13579)
 
 ### Function to sim games 
@@ -43,10 +45,10 @@ sim_round <- function(bracket) {
 
 
 ### Read in Seed list and team ratings
-seed_list <- read_csv("~/Downloads/bracketmaniav2 - seed_list.csv")
+seed_list <- read_csv("~/Downloads/testing_brackets - seed_list.csv")
 
-power_rankings <- read_csv("~/Downloads/bracketmaniav2 - KP.csv")
-perc_chosen <- read_csv("~/Downloads/bracketmaniav2 - pick_perc_std.csv")
+power_rankings <- read_csv("~/Downloads/testing_brackets - KP.csv")
+perc_chosen <- read_csv("~/Downloads/testing_brackets - pick_perc_std.csv")
 
 # power_rankings <- read_csv("~/Downloads/power_rankings.csv")
 power_rankings = power_rankings %>% rename("team" = "TeamName")
@@ -209,7 +211,6 @@ library(furrr)
 options(future.fork.enable = T)
 
 ### Number of sims to run
-n_result_sims <- 1
 # set.seed(13579)
 
 ### Function to sim games 
@@ -238,13 +239,13 @@ sim_round <- function(bracket) {
 
 
 ### Read in Seed list and team ratings
-seed_list <- read_csv("~/Downloads/bracketmaniav2 - seed_list.csv")
+seed_list <- read_csv("~/Downloads/testing_brackets - seed_list.csv")
 
-power_rankings <- read_csv("~/Downloads/bracketmaniav2 - KP.csv")
+power_rankings <- read_csv("~/Downloads/testing_brackets - KP.csv")
 
 # power_rankings <- read_csv("~/Downloads/power_rankings.csv")
 power_rankings = power_rankings %>% rename("team" = "TeamName")
-vegas <- read_csv("~/Downloads/bracketmaniav2 - vegas_so_far.csv")
+vegas <- read_csv("~/Downloads/testing_brackets - vegas_so_far.csv")
 
 
 seed_list <- 
