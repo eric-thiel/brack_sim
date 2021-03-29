@@ -11,6 +11,7 @@ Pre-tournament workflow is as follows -
 
 
 n_creation_sims is number of brackets to be created from espn pick percentages. These will be the brackets chosen from.
+
 n_result_sims is the number of simulations to test the above brackets against. These are based on Odds & KP.
 
 run generate optimal brackets
