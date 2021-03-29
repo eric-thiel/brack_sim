@@ -122,4 +122,81 @@ summary = max_pts %>% group_by(df)%>%
   summarise(win_prob = sum(ifelse(rank == 1, 1,0))/n_result_sims)
 summary = summary %>% rename("Bracket" = "df")
 summary$win_prob = round(summary$win_prob, 3)
-summary = summary %>% arrange(win_prob)
+summary = summary %>% arrange(-win_prob)
+summary$Time = Sys.time()
+write.csv(summary, file = "win_prob_as_of_now.csv", row.names = FALSE)
+
+
+#wins_to_check = subset(max_pts, df == "Eric Thiel 3" & rank == 1)
+
+get_cheering = function(bracket_name){
+wins_to_check = subset(max_pts, df == bracket_name & rank == 1)
+  
+#winner_bracket = 29
+#get_best_bracket(round_winners, 29)
+
+hold_rd1_bb <- data.frame(matrix(ncol = 1, nrow = 0))
+x <- c("hmmmmmm[[1]]")
+colnames(hold_rd1_bb) <- x
+
+hold_rd2_bb <- data.frame(matrix(ncol = 1, nrow = 0))
+x <- c("hmmmmmm[[2]]")
+colnames(hold_rd2_bb) <- x
+
+hold_rd3_bb <- data.frame(matrix(ncol = 1, nrow = 0))
+x <- c("hmmmmmm[[3]]")
+colnames(hold_rd3_bb) <- x
+
+hold_rd4_bb <- data.frame(matrix(ncol = 1, nrow = 0))
+x <- c("hmmmmmm[[4]]")
+colnames(hold_rd4_bb) <- x
+
+hold_rd5_bb <- data.frame(matrix(ncol = 1, nrow = 0))
+x <- c("hmmmmmm[[5]]")
+colnames(hold_rd5_bb) <- x
+
+hold_rd6_bb <- data.frame(matrix(ncol = 1, nrow = 0))
+x <- c("hmmmmmm[[6]]")
+colnames(hold_rd6_bb) <- x
+
+for (t in wins_to_check$sim_num) {
+  hmmmmmm = get_best_bracket(round_winners, t)
+  rd1_bb = as.data.frame(hmmmmmm[[1]])
+  rd2_bb = as.data.frame(hmmmmmm[[2]])
+  rd3_bb = as.data.frame(hmmmmmm[[3]])
+  rd4_bb = as.data.frame(hmmmmmm[[4]])
+  rd5_bb = as.data.frame(hmmmmmm[[5]])
+  rd6_bb = as.data.frame(hmmmmmm[[6]])
+  
+  
+  hold_rd1_bb = rbind(hold_rd1_bb, rd1_bb)
+  hold_rd2_bb = rbind(hold_rd2_bb, rd2_bb)
+  hold_rd3_bb = rbind(hold_rd3_bb, rd3_bb)
+  hold_rd4_bb = rbind(hold_rd4_bb, rd4_bb)
+  hold_rd5_bb = rbind(hold_rd5_bb, rd5_bb)
+  hold_rd6_bb = rbind(hold_rd6_bb, rd6_bb)
+  
+  }
+
+wins_who_to_cheer_for <- 
+  seed_list %>% 
+  select(-elim_round) %>% 
+  group_by(team) %>% 
+  mutate(
+         'second_round' = sum(team == hold_rd1_bb$`hmmmmmm[[1]]`)/nrow(wins_to_check),
+         'sweet_sixteen' = sum(team == hold_rd2_bb$`hmmmmmm[[2]]`)/nrow(wins_to_check),
+         'elite_eight' = sum(team == hold_rd3_bb$`hmmmmmm[[3]]`)/nrow(wins_to_check),
+         'final_four' = sum(team == hold_rd4_bb$`hmmmmmm[[4]]`)/nrow(wins_to_check),
+         'championship_game' = sum(team == hold_rd5_bb$`hmmmmmm[[5]]`)/nrow(wins_to_check),
+         'champ' = sum(team == hold_rd6_bb$`hmmmmmm[[6]]`)/nrow(wins_to_check)) %>% 
+  ungroup()
+
+return(wins_who_to_cheer_for)
+
+}
+# get_sim = subset(max_pts, sim_num == 29)
+
+wins_who_to_cheer_for = get_cheering("Ryder Varga")
+
+
+
