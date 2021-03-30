@@ -113,6 +113,7 @@ max_pts = results %>% group_by(sim_num)%>%
   group_by(bracket_num)%>%
   summarise(mean_score_over_avg = mean(score_above_avg))%>%arrange(-mean_score_over_avg)
 
-winner_bracket = head(max_pts$bracket_num,1)
+winner_bracket = max_pts[1,]
+winner_bracket = winner_bracket$bracket_num
 
 winn = get_best_bracket(bracket_created, winner_bracket)
