@@ -1,6 +1,6 @@
 ### get winning bracket shit ###
 
-get_best_bracket = function(bracket_created, winner_bracket, ){
+get_best_bracket = function(bracket_created, winner_bracket){
   
   winner_bracket_lower = winner_bracket*32-31
   winner_bracket_upper = winner_bracket*32

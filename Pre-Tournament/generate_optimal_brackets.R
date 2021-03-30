@@ -14,8 +14,8 @@ library(furrr)
 options(future.fork.enable = T)
 
 ### Number of sims to run
-n_creation_sims <- 25000 ## amount of brackets to be created from pick percentages
-n_result_sims <- 25000 ## amount of brackets to be created from vegas (for first round) and KP the rest of the way
+n_creation_sims <- 20000 ## amount of brackets to be created from pick percentages
+n_result_sims <- 20000 ## amount of brackets to be created from vegas (for first round) and KP the rest of the way
 
 # set.seed(13579)
 
@@ -129,27 +129,9 @@ wp_matrix <-
                                                         ifelse(when_can_play == "r6", (1-(r6_team + r6_opponent))/2+r6_team,0.5))))))) %>% select(team, opponent, win_prob)
 
   wp_matrix$win_prob = ifelse(is.na(wp_matrix$win_prob), 0.5, wp_matrix$win_prob)
- # win_prob = ifelse(when_can_play == "r1",  r1_team, 
- #                   ifelse(when_can_play == "r2",(1-(r2_team + r2_opponent))/2+r2_team,
- #                          ifelse(when_can_play == "r3",(1-(r3_team + r3_opponent))/2+r3_team,
- #                                 ifelse(when_can_play == "r4",(1-(r4_team + r4_opponent))/2+r4_team,
- #                                        ifelse(when_can_play=="r5",(1-(r5_team + r5_opponent))/2+r5_team,
- #                                               ifelse(when_can_play == "r6", (1-(r6_team + r6_opponent))/2+r6_team,0.5))))))) %>% select(team, opponent, win_prob)
 
-# win_prob = ifelse(when_can_play == "r1",  r1_team, 
-#                   ifelse(when_can_play == "r2",r2_team / (r2_team + r2_opponent),
-#                          ifelse(when_can_play == "r3",r3_team / (r3_team + r3_opponent),
-#                                 ifelse(when_can_play == "r4",r4_team / (r4_team + r4_opponent),
-#                                        ifelse(when_can_play=="r5",r5_team / (r5_team + r5_opponent),
-#                                               ifelse(when_can_play == "r6", r6_team / (r6_team + r6_opponent),0.5))))))) %>% select(team, opponent, win_prob)
-#
   
-  ### Score Diff of Game
-  #mutate('pred_score_diff' = rating_team - rating_opponent)%>%  
-  ### Win Prob for Team over Opponent
-  #mutate('win_prob' = round(pnorm(pred_score_diff, 0,11),5))
-
-
+  
 ### First Four
 first_four <- 
   seed_list %>% 
@@ -192,6 +174,7 @@ sim_results <-
          'champ' = sum(team == bracket_created[[6]])/n_creation_sims) %>% 
   ungroup() %>% 
   select(-first_four) 
+
 
 #write_csv(sim_results, 'ncaa_sims.csv')
 
