@@ -33,4 +33,26 @@ Post-tournament workflow -
 
 Takes a fairly long time but honestly is as optimized as I think ill get it. 
 
+My ideal bracket (using ESPN pick percents (35% chose Zaga as winner, Win prob was more like 40%)
+
+ [1] "Gonzaga"        "Oklahoma"       "Creighton"      "Ohio"           "USC"           
+ [6] "Kansas"         "VCU"            "Iowa"           "Michigan"       "LSU"           
+[11] "Colorado"       "Florida St."    "BYU"            "Texas"          "Maryland"      
+[16] "Alabama"        "Baylor"         "North Carolina" "Villanova"      "Purdue"        
+[21] "Texas Tech"     "Arkansas"       "Virginia Tech"  "Ohio St."       "Illinois"      
+[26] "Loyola Chicago" "Tennessee"      "Oklahoma St."   "San Diego St."  "West Virginia" 
+[31] "Rutgers"        "Houston"       
+
+ [1] "Gonzaga"       "Creighton"     "Kansas"        "Iowa"          "Michigan"      "Florida St."  
+ [7] "BYU"           "Alabama"       "Baylor"        "Villanova"     "Arkansas"      "Ohio St."     
+[13] "Illinois"      "Oklahoma St."  "San Diego St." "Houston"      
+
+[1] "Gonzaga"  "Iowa"     "Michigan" "Alabama"  "Baylor"   "Ohio St." "Illinois" "Houston" 
+
+[1] "Gonzaga"  "Michigan" "Baylor"   "Houston" 
+
+[1] "Gonzaga" "Houston"
+
+[1] "Gonzaga"
+
 
