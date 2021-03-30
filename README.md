@@ -35,26 +35,37 @@ Takes a fairly long time but honestly is as optimized as I think ill get it.
 
 My ideal bracket (using ESPN pick percents (35% chose Zaga as winner, Win prob was more like 40%)
 
- [1] "Gonzaga"      "Oklahoma"        "Creighton"      "Ohio"           "USC"            "Kansas"         "VCU"            "Iowa"      
+ [1] Rd 1: 
+ 
+     "Gonzaga"      "Oklahoma"        "Creighton"      "Ohio"           "USC"            "Kansas"         "VCU"            "Iowa"  
      "Michigan"     "LSU"             "Colorado"       "Florida St."    "BYU"            "Texas"          "Maryland"       "Alabama"    
      "Baylor"       "North Carolina"  "Villanova"      "Purdue"         "Texas Tech"     "Arkansas"       "Virginia Tech"  "Ohio St."    
-     "Illinois"     "Loyola Chicago"  "Tennessee"      "Oklahoma St."   "San Diego St."  "West Virginia"  "Rutgers"        "Houston"       
-
- [1] "Gonzaga"       "Creighton"     "Kansas"         "Iowa"     
+     "Illinois"     "Loyola Chicago"  "Tennessee"      "Oklahoma St."   "San Diego St."  "West Virginia"  "Rutgers"        "Houston"      
+ [2] Sweet 16: 
+ 
+     "Gonzaga"       "Creighton"     "Kansas"         "Iowa"     
      "Michigan"      "Florida St."   "BYU"            "Alabama" 
      "Baylor"        "Villanova"     "Arkansas"       "Ohio St."     
      "Illinois"      "Oklahoma St."  "San Diego St."  "Houston"      
 
-[1] "Gonzaga"    "Iowa"   
+[1] Elite 8: 
+
+    "Gonzaga"    "Iowa"   
     "Michigan"   "Alabama" 
     "Baylor"     "Ohio St." 
     "Illinois"   "Houston" 
 
-[1] "Gonzaga"   "Michigan" 
-    "Baylor"    "Houston" 
+[1] Final Four: 
 
-[1] "Gonzaga" "Houston"
+    "Gonzaga"   "Michigan"
+    "Baylor"    "Houston"  
 
-[1] "Gonzaga"
+[1] Championship Game: 
+
+    "Gonzaga" "Houston" 
+
+[1] Championship Winner: 
+
+    "Gonzaga" 
 
 
