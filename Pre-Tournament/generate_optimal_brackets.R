@@ -14,7 +14,7 @@ library(furrr)
 options(future.fork.enable = T)
 
 ### Number of sims to run
-n_creation_sims <- 30000 ## amount of brackets to be created from pick percentages
+n_creation_sims <- 25000 ## amount of brackets to be created from pick percentages
 n_result_sims <- 25000 ## amount of brackets to be created from vegas (for first round) and KP the rest of the way
 
 # set.seed(13579)
@@ -224,7 +224,7 @@ build_bracket <- function(seed_list) {
   ix <- seq(1, n, 2)
   tibble('team' = seed_list$team[ix],
          'opponent' = seed_list$team[-ix]) %>% 
-    inner_join(wp_matrix, by = c('team', 'opponent'))
+    inner_join(wp_matrix_test, by = c('team', 'opponent'))
   
 }
 
