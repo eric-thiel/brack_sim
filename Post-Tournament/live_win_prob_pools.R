@@ -196,7 +196,7 @@ return(wins_who_to_cheer_for)
 }
 # get_sim = subset(max_pts, sim_num == 29)
 
-wins_who_to_cheer_for = get_cheering("Ryder Varga")
+wins_who_to_cheer_for = get_cheering("thomas Goetz 3")
 
 
 
